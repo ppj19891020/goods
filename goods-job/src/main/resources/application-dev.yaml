@@ -17,10 +17,28 @@ spring:
         max-wait: 60000
         validation-query: select 1
         test-while-idle: true
+    ##当当定时任务job执行情况
     elastic-job:
       url: jdbc:mysql://114.55.75.116:3306/elastic_job?useSSL=false&useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&allowMultiQueries=true&tinyInt1isBit=false
       username: root
       password: C#m9klT@n4!N3m
+      driver-class-name: com.mysql.jdbc.Driver
+      druid:
+        min-idle: 1
+        max-active: 300
+        filter:
+          stat:
+            log-slow-sql: true
+            slow-sql-millis: 50
+        initial-size: 1
+        max-wait: 60000
+        validation-query: select 1
+        test-while-idle: true
+    ##余杭仓库数据源
+    idoo:
+      url: jdbc:mysql://rr-bp1bstq8mtcz7qjyzo.mysql.rds.aliyuncs.com:3306/idoo?useSSL=false&useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&allowMultiQueries=true&tinyInt1isBit=false
+      username: reader
+      password: yuanshujureader
       driver-class-name: com.mysql.jdbc.Driver
       druid:
         min-idle: 1

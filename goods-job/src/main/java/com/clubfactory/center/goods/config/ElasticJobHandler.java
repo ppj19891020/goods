@@ -10,6 +10,8 @@ import com.dangdang.ddframe.job.lite.api.JobScheduler;
 import com.dangdang.ddframe.job.lite.config.LiteJobConfiguration;
 import com.dangdang.ddframe.job.lite.spring.api.SpringJobScheduler;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -31,6 +33,14 @@ public class ElasticJobHandler {
     @Resource
     protected JobEventConfiguration jobEventConfiguration;
 
+    @Autowired
+    @Qualifier(value = "updateGoodsPriceJob")
+    private SimpleJob updateGoodsPriceJob;
+
+    @Autowired
+    @Qualifier(value = "updatePurchasePriceJob")
+    private SimpleJob updatePurchasePriceJob;
+
     /**
      * 更新采购价定时任务
      * @param cron
@@ -42,7 +52,7 @@ public class ElasticJobHandler {
     public JobScheduler updateGoodsPriceJobScheduler(@Value("${elastic-job.updateGoodsPriceJob.cron}") final String cron,
                                            @Value("${elastic-job.updateGoodsPriceJob.shardingTotalCount}") final int shardingTotalCount,
                                            @Value("${elastic-job.updateGoodsPriceJob.shardingItemParameters}") final String shardingItemParameters){
-        return new SpringJobScheduler(new UpdatePurchasePriceJob(), regCenter, getLiteJobConfiguration(UpdatePurchasePriceJob.class, cron, shardingTotalCount,
+        return new SpringJobScheduler(updateGoodsPriceJob, regCenter, getLiteJobConfiguration(UpdatePurchasePriceJob.class, cron, shardingTotalCount,
                 shardingItemParameters), jobEventConfiguration);
     }
 
@@ -57,7 +67,7 @@ public class ElasticJobHandler {
     public JobScheduler simpleJobScheduler(@Value("${elastic-job.updateGoodsPriceJob.cron}") final String cron,
                                            @Value("${elastic-job.updateGoodsPriceJob.shardingTotalCount}") final int shardingTotalCount,
                                            @Value("${elastic-job.updateGoodsPriceJob.shardingItemParameters}") final String shardingItemParameters){
-        return new SpringJobScheduler(new UpdateGoodsPriceJob(), regCenter, getLiteJobConfiguration(UpdateGoodsPriceJob.class, cron, shardingTotalCount,
+        return new SpringJobScheduler(updatePurchasePriceJob, regCenter, getLiteJobConfiguration(UpdateGoodsPriceJob.class, cron, shardingTotalCount,
                 shardingItemParameters), jobEventConfiguration);
     }
 

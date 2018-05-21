@@ -1,0 +1,845 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.clubfactory.center.goods.dao.idoo.PurchaseOrderDao" >
+  <resultMap id="BaseResultMap" type="com.clubfactory.center.goods.entity.PurchaseOrder" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+    <result column="qty_system_demand" property="qtySystemDemand" jdbcType="INTEGER" />
+    <result column="qty_purchase_demand" property="qtyPurchaseDemand" jdbcType="INTEGER" />
+    <result column="qty_purchased" property="qtyPurchased" jdbcType="INTEGER" />
+    <result column="qty_received" property="qtyReceived" jdbcType="INTEGER" />
+    <result column="purchase_price" property="purchasePrice" jdbcType="DOUBLE" />
+    <result column="target_warehouse_id" property="targetWarehouseId" jdbcType="SMALLINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="purchase_time" property="purchaseTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="complete_time" property="completeTime" jdbcType="TIMESTAMP" />
+    <result column="source_type" property="sourceType" jdbcType="SMALLINT" />
+    <result column="has_backorder" property="hasBackorder" jdbcType="SMALLINT" />
+    <result column="state" property="state" jdbcType="SMALLINT" />
+    <result column="sku_sale_price" property="skuSalePrice" jdbcType="DOUBLE" />
+    <result column="complete_user_id" property="completeUserId" jdbcType="INTEGER" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+    <result column="follow_user_id" property="followUserId" jdbcType="INTEGER" />
+    <result column="purchase_user_id" property="purchaseUserId" jdbcType="INTEGER" />
+    <result column="source_purchase_order_id" property="sourcePurchaseOrderId" jdbcType="INTEGER" />
+    <result column="stock_keep_unit_id" property="stockKeepUnitId" jdbcType="INTEGER" />
+    <result column="supply_order_id" property="supplyOrderId" jdbcType="INTEGER" />
+    <result column="update_user_id" property="updateUserId" jdbcType="INTEGER" />
+    <result column="purchase_company_name" property="purchaseCompanyName" jdbcType="VARCHAR" />
+    <result column="difficult_order" property="difficultOrder" jdbcType="BIT" />
+    <result column="difficult_order_follower_id" property="difficultOrderFollowerId" jdbcType="INTEGER" />
+    <result column="logistics_status" property="logisticsStatus" jdbcType="SMALLINT" />
+    <result column="qty_signed" property="qtySigned" jdbcType="INTEGER" />
+    <result column="signed_time" property="signedTime" jdbcType="TIMESTAMP" />
+    <result column="signed_user_id" property="signedUserId" jdbcType="INTEGER" />
+    <result column="complete_user_name" property="completeUserName" jdbcType="VARCHAR" />
+    <result column="create_user_name" property="createUserName" jdbcType="VARCHAR" />
+    <result column="difficult_order_follower_name" property="difficultOrderFollowerName" jdbcType="VARCHAR" />
+    <result column="follow_user_name" property="followUserName" jdbcType="VARCHAR" />
+    <result column="purchase_user_name" property="purchaseUserName" jdbcType="VARCHAR" />
+    <result column="signed_user_name" property="signedUserName" jdbcType="VARCHAR" />
+    <result column="update_user_name" property="updateUserName" jdbcType="VARCHAR" />
+    <result column="receive_user_name" property="receiveUserName" jdbcType="VARCHAR" />
+    <result column="receive_user_id" property="receiveUserId" jdbcType="INTEGER" />
+    <result column="has_bought" property="hasBought" jdbcType="SMALLINT" />
+    <result column="top_source_purchase_order_id" property="topSourcePurchaseOrderId" jdbcType="INTEGER" />
+    <result column="short_uuid" property="shortUuid" jdbcType="VARCHAR" />
+    <result column="is_exception" property="isException" jdbcType="BIT" />
+    <result column="purchase_sku_barcode" property="purchaseSkuBarcode" jdbcType="VARCHAR" />
+    <result column="is_cooperative_supplier" property="isCooperativeSupplier" jdbcType="BIT" />
+    <result column="prev_state" property="prevState" jdbcType="SMALLINT" />
+    <result column="supplier_uuid" property="supplierUuid" jdbcType="CHAR" />
+    <result column="sku_link_rel_id" property="skuLinkRelId" jdbcType="INTEGER" />
+    <result column="source_purchase_order_uuid" property="sourcePurchaseOrderUuid" jdbcType="VARCHAR" />
+    <result column="top_source_purchase_order_uuid" property="topSourcePurchaseOrderUuid" jdbcType="VARCHAR" />
+    <result column="supplier_is_disposable" property="supplierIsDisposable" jdbcType="BIT" />
+    <result column="quality_type" property="qualityType" jdbcType="VARCHAR" />
+    <result column="quality_score" property="qualityScore" jdbcType="REAL" />
+  </resultMap>
+
+  <resultMap id="ResultMapWithBLOBs" type="com.clubfactory.center.goods.entity.PurchaseOrderWithBLOBs" extends="BaseResultMap" >
+    <result column="purchase_link" property="purchaseLink" jdbcType="LONGVARCHAR" />
+    <result column="purchase_link_note" property="purchaseLinkNote" jdbcType="LONGVARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, uuid, qty_system_demand, qty_purchase_demand, qty_purchased, qty_received, purchase_price, 
+    target_warehouse_id, create_time, purchase_time, update_time, complete_time, source_type, 
+    has_backorder, state, sku_sale_price, complete_user_id, create_user_id, follow_user_id, 
+    purchase_user_id, source_purchase_order_id, stock_keep_unit_id, supply_order_id, 
+    update_user_id, purchase_company_name, difficult_order, difficult_order_follower_id, 
+    logistics_status, qty_signed, signed_time, signed_user_id, complete_user_name, create_user_name, 
+    difficult_order_follower_name, follow_user_name, purchase_user_name, signed_user_name, 
+    update_user_name, receive_user_name, receive_user_id, has_bought, top_source_purchase_order_id, 
+    short_uuid, is_exception, purchase_sku_barcode, is_cooperative_supplier, prev_state, 
+    supplier_uuid, sku_link_rel_id, source_purchase_order_uuid, top_source_purchase_order_uuid, 
+    supplier_is_disposable, quality_type, quality_score
+  </sql>
+
+  <sql id="Blob_Column_List" >
+    purchase_link, purchase_link_note
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from purchase_order
+    where id = #{id}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from purchase_order
+    where id = #{id}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.clubfactory.center.goods.entity.PurchaseOrderWithBLOBs" >
+    insert into purchase_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uuid != null" >
+        uuid,
+      </if>
+      <if test="qtySystemDemand != null" >
+        qty_system_demand,
+      </if>
+      <if test="qtyPurchaseDemand != null" >
+        qty_purchase_demand,
+      </if>
+      <if test="qtyPurchased != null" >
+        qty_purchased,
+      </if>
+      <if test="qtyReceived != null" >
+        qty_received,
+      </if>
+      <if test="purchasePrice != null" >
+        purchase_price,
+      </if>
+      <if test="targetWarehouseId != null" >
+        target_warehouse_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="purchaseTime != null" >
+        purchase_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="completeTime != null" >
+        complete_time,
+      </if>
+      <if test="sourceType != null" >
+        source_type,
+      </if>
+      <if test="hasBackorder != null" >
+        has_backorder,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="skuSalePrice != null" >
+        sku_sale_price,
+      </if>
+      <if test="completeUserId != null" >
+        complete_user_id,
+      </if>
+      <if test="createUserId != null" >
+        create_user_id,
+      </if>
+      <if test="followUserId != null" >
+        follow_user_id,
+      </if>
+      <if test="purchaseUserId != null" >
+        purchase_user_id,
+      </if>
+      <if test="sourcePurchaseOrderId != null" >
+        source_purchase_order_id,
+      </if>
+      <if test="stockKeepUnitId != null" >
+        stock_keep_unit_id,
+      </if>
+      <if test="supplyOrderId != null" >
+        supply_order_id,
+      </if>
+      <if test="updateUserId != null" >
+        update_user_id,
+      </if>
+      <if test="purchaseCompanyName != null" >
+        purchase_company_name,
+      </if>
+      <if test="difficultOrder != null" >
+        difficult_order,
+      </if>
+      <if test="difficultOrderFollowerId != null" >
+        difficult_order_follower_id,
+      </if>
+      <if test="logisticsStatus != null" >
+        logistics_status,
+      </if>
+      <if test="qtySigned != null" >
+        qty_signed,
+      </if>
+      <if test="signedTime != null" >
+        signed_time,
+      </if>
+      <if test="signedUserId != null" >
+        signed_user_id,
+      </if>
+      <if test="completeUserName != null" >
+        complete_user_name,
+      </if>
+      <if test="createUserName != null" >
+        create_user_name,
+      </if>
+      <if test="difficultOrderFollowerName != null" >
+        difficult_order_follower_name,
+      </if>
+      <if test="followUserName != null" >
+        follow_user_name,
+      </if>
+      <if test="purchaseUserName != null" >
+        purchase_user_name,
+      </if>
+      <if test="signedUserName != null" >
+        signed_user_name,
+      </if>
+      <if test="updateUserName != null" >
+        update_user_name,
+      </if>
+      <if test="receiveUserName != null" >
+        receive_user_name,
+      </if>
+      <if test="receiveUserId != null" >
+        receive_user_id,
+      </if>
+      <if test="hasBought != null" >
+        has_bought,
+      </if>
+      <if test="topSourcePurchaseOrderId != null" >
+        top_source_purchase_order_id,
+      </if>
+      <if test="shortUuid != null" >
+        short_uuid,
+      </if>
+      <if test="isException != null" >
+        is_exception,
+      </if>
+      <if test="purchaseSkuBarcode != null" >
+        purchase_sku_barcode,
+      </if>
+      <if test="isCooperativeSupplier != null" >
+        is_cooperative_supplier,
+      </if>
+      <if test="prevState != null" >
+        prev_state,
+      </if>
+      <if test="supplierUuid != null" >
+        supplier_uuid,
+      </if>
+      <if test="skuLinkRelId != null" >
+        sku_link_rel_id,
+      </if>
+      <if test="sourcePurchaseOrderUuid != null" >
+        source_purchase_order_uuid,
+      </if>
+      <if test="topSourcePurchaseOrderUuid != null" >
+        top_source_purchase_order_uuid,
+      </if>
+      <if test="supplierIsDisposable != null" >
+        supplier_is_disposable,
+      </if>
+      <if test="qualityType != null" >
+        quality_type,
+      </if>
+      <if test="qualityScore != null" >
+        quality_score,
+      </if>
+      <if test="purchaseLink != null" >
+        purchase_link,
+      </if>
+      <if test="purchaseLinkNote != null" >
+        purchase_link_note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="uuid != null" >
+        #{uuid},
+      </if>
+      <if test="qtySystemDemand != null" >
+        #{qtySystemDemand},
+      </if>
+      <if test="qtyPurchaseDemand != null" >
+        #{qtyPurchaseDemand},
+      </if>
+      <if test="qtyPurchased != null" >
+        #{qtyPurchased},
+      </if>
+      <if test="qtyReceived != null" >
+        #{qtyReceived},
+      </if>
+      <if test="purchasePrice != null" >
+        #{purchasePrice},
+      </if>
+      <if test="targetWarehouseId != null" >
+        #{targetWarehouseId},
+      </if>
+      <if test="createTime != null" >
+        #{createTime},
+      </if>
+      <if test="purchaseTime != null" >
+        #{purchaseTime},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime},
+      </if>
+      <if test="completeTime != null" >
+        #{completeTime},
+      </if>
+      <if test="sourceType != null" >
+        #{sourceType},
+      </if>
+      <if test="hasBackorder != null" >
+        #{hasBackorder},
+      </if>
+      <if test="state != null" >
+        #{state},
+      </if>
+      <if test="skuSalePrice != null" >
+        #{skuSalePrice},
+      </if>
+      <if test="completeUserId != null" >
+        #{completeUserId},
+      </if>
+      <if test="createUserId != null" >
+        #{createUserId},
+      </if>
+      <if test="followUserId != null" >
+        #{followUserId},
+      </if>
+      <if test="purchaseUserId != null" >
+        #{purchaseUserId},
+      </if>
+      <if test="sourcePurchaseOrderId != null" >
+        #{sourcePurchaseOrderId},
+      </if>
+      <if test="stockKeepUnitId != null" >
+        #{stockKeepUnitId},
+      </if>
+      <if test="supplyOrderId != null" >
+        #{supplyOrderId},
+      </if>
+      <if test="updateUserId != null" >
+        #{updateUserId},
+      </if>
+      <if test="purchaseCompanyName != null" >
+        #{purchaseCompanyName},
+      </if>
+      <if test="difficultOrder != null" >
+        #{difficultOrder},
+      </if>
+      <if test="difficultOrderFollowerId != null" >
+        #{difficultOrderFollowerId},
+      </if>
+      <if test="logisticsStatus != null" >
+        #{logisticsStatus},
+      </if>
+      <if test="qtySigned != null" >
+        #{qtySigned},
+      </if>
+      <if test="signedTime != null" >
+        #{signedTime},
+      </if>
+      <if test="signedUserId != null" >
+        #{signedUserId},
+      </if>
+      <if test="completeUserName != null" >
+        #{completeUserName},
+      </if>
+      <if test="createUserName != null" >
+        #{createUserName},
+      </if>
+      <if test="difficultOrderFollowerName != null" >
+        #{difficultOrderFollowerName},
+      </if>
+      <if test="followUserName != null" >
+        #{followUserName},
+      </if>
+      <if test="purchaseUserName != null" >
+        #{purchaseUserName},
+      </if>
+      <if test="signedUserName != null" >
+        #{signedUserName},
+      </if>
+      <if test="updateUserName != null" >
+        #{updateUserName},
+      </if>
+      <if test="receiveUserName != null" >
+        #{receiveUserName},
+      </if>
+      <if test="receiveUserId != null" >
+        #{receiveUserId},
+      </if>
+      <if test="hasBought != null" >
+        #{hasBought},
+      </if>
+      <if test="topSourcePurchaseOrderId != null" >
+        #{topSourcePurchaseOrderId},
+      </if>
+      <if test="shortUuid != null" >
+        #{shortUuid},
+      </if>
+      <if test="isException != null" >
+        #{isException},
+      </if>
+      <if test="purchaseSkuBarcode != null" >
+        #{purchaseSkuBarcode},
+      </if>
+      <if test="isCooperativeSupplier != null" >
+        #{isCooperativeSupplier},
+      </if>
+      <if test="prevState != null" >
+        #{prevState},
+      </if>
+      <if test="supplierUuid != null" >
+        #{supplierUuid},
+      </if>
+      <if test="skuLinkRelId != null" >
+        #{skuLinkRelId},
+      </if>
+      <if test="sourcePurchaseOrderUuid != null" >
+        #{sourcePurchaseOrderUuid},
+      </if>
+      <if test="topSourcePurchaseOrderUuid != null" >
+        #{topSourcePurchaseOrderUuid},
+      </if>
+      <if test="supplierIsDisposable != null" >
+        #{supplierIsDisposable},
+      </if>
+      <if test="qualityType != null" >
+        #{qualityType},
+      </if>
+      <if test="qualityScore != null" >
+        #{qualityScore},
+      </if>
+      <if test="purchaseLink != null" >
+        #{purchaseLink},
+      </if>
+      <if test="purchaseLinkNote != null" >
+        #{purchaseLinkNote},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.clubfactory.center.goods.entity.PurchaseOrderWithBLOBs" >
+    update purchase_order
+    <set >
+      <if test="uuid != null" >
+        uuid = #{uuid},
+      </if>
+      <if test="qtySystemDemand != null" >
+        qty_system_demand = #{qtySystemDemand},
+      </if>
+      <if test="qtyPurchaseDemand != null" >
+        qty_purchase_demand = #{qtyPurchaseDemand},
+      </if>
+      <if test="qtyPurchased != null" >
+        qty_purchased = #{qtyPurchased},
+      </if>
+      <if test="qtyReceived != null" >
+        qty_received = #{qtyReceived},
+      </if>
+      <if test="purchasePrice != null" >
+        purchase_price = #{purchasePrice},
+      </if>
+      <if test="targetWarehouseId != null" >
+        target_warehouse_id = #{targetWarehouseId},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime},
+      </if>
+      <if test="purchaseTime != null" >
+        purchase_time = #{purchaseTime},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime},
+      </if>
+      <if test="completeTime != null" >
+        complete_time = #{completeTime},
+      </if>
+      <if test="sourceType != null" >
+        source_type = #{sourceType},
+      </if>
+      <if test="hasBackorder != null" >
+        has_backorder = #{hasBackorder},
+      </if>
+      <if test="state != null" >
+        state = #{state},
+      </if>
+      <if test="skuSalePrice != null" >
+        sku_sale_price = #{skuSalePrice},
+      </if>
+      <if test="completeUserId != null" >
+        complete_user_id = #{completeUserId},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId},
+      </if>
+      <if test="followUserId != null" >
+        follow_user_id = #{followUserId},
+      </if>
+      <if test="purchaseUserId != null" >
+        purchase_user_id = #{purchaseUserId},
+      </if>
+      <if test="sourcePurchaseOrderId != null" >
+        source_purchase_order_id = #{sourcePurchaseOrderId},
+      </if>
+      <if test="stockKeepUnitId != null" >
+        stock_keep_unit_id = #{stockKeepUnitId},
+      </if>
+      <if test="supplyOrderId != null" >
+        supply_order_id = #{supplyOrderId},
+      </if>
+      <if test="updateUserId != null" >
+        update_user_id = #{updateUserId},
+      </if>
+      <if test="purchaseCompanyName != null" >
+        purchase_company_name = #{purchaseCompanyName},
+      </if>
+      <if test="difficultOrder != null" >
+        difficult_order = #{difficultOrder},
+      </if>
+      <if test="difficultOrderFollowerId != null" >
+        difficult_order_follower_id = #{difficultOrderFollowerId},
+      </if>
+      <if test="logisticsStatus != null" >
+        logistics_status = #{logisticsStatus},
+      </if>
+      <if test="qtySigned != null" >
+        qty_signed = #{qtySigned},
+      </if>
+      <if test="signedTime != null" >
+        signed_time = #{signedTime},
+      </if>
+      <if test="signedUserId != null" >
+        signed_user_id = #{signedUserId},
+      </if>
+      <if test="completeUserName != null" >
+        complete_user_name = #{completeUserName},
+      </if>
+      <if test="createUserName != null" >
+        create_user_name = #{createUserName},
+      </if>
+      <if test="difficultOrderFollowerName != null" >
+        difficult_order_follower_name = #{difficultOrderFollowerName},
+      </if>
+      <if test="followUserName != null" >
+        follow_user_name = #{followUserName},
+      </if>
+      <if test="purchaseUserName != null" >
+        purchase_user_name = #{purchaseUserName},
+      </if>
+      <if test="signedUserName != null" >
+        signed_user_name = #{signedUserName},
+      </if>
+      <if test="updateUserName != null" >
+        update_user_name = #{updateUserName},
+      </if>
+      <if test="receiveUserName != null" >
+        receive_user_name = #{receiveUserName},
+      </if>
+      <if test="receiveUserId != null" >
+        receive_user_id = #{receiveUserId},
+      </if>
+      <if test="hasBought != null" >
+        has_bought = #{hasBought},
+      </if>
+      <if test="topSourcePurchaseOrderId != null" >
+        top_source_purchase_order_id = #{topSourcePurchaseOrderId},
+      </if>
+      <if test="shortUuid != null" >
+        short_uuid = #{shortUuid},
+      </if>
+      <if test="isException != null" >
+        is_exception = #{isException},
+      </if>
+      <if test="purchaseSkuBarcode != null" >
+        purchase_sku_barcode = #{purchaseSkuBarcode},
+      </if>
+      <if test="isCooperativeSupplier != null" >
+        is_cooperative_supplier = #{isCooperativeSupplier},
+      </if>
+      <if test="prevState != null" >
+        prev_state = #{prevState},
+      </if>
+      <if test="supplierUuid != null" >
+        supplier_uuid = #{supplierUuid},
+      </if>
+      <if test="skuLinkRelId != null" >
+        sku_link_rel_id = #{skuLinkRelId},
+      </if>
+      <if test="sourcePurchaseOrderUuid != null" >
+        source_purchase_order_uuid = #{sourcePurchaseOrderUuid},
+      </if>
+      <if test="topSourcePurchaseOrderUuid != null" >
+        top_source_purchase_order_uuid = #{topSourcePurchaseOrderUuid},
+      </if>
+      <if test="supplierIsDisposable != null" >
+        supplier_is_disposable = #{supplierIsDisposable},
+      </if>
+      <if test="qualityType != null" >
+        quality_type = #{qualityType},
+      </if>
+      <if test="qualityScore != null" >
+        quality_score = #{qualityScore},
+      </if>
+      <if test="purchaseLink != null" >
+        purchase_link = #{purchaseLink},
+      </if>
+      <if test="purchaseLinkNote != null" >
+        purchase_link_note = #{purchaseLinkNote},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.clubfactory.center.goods.entity.PurchaseOrderWithBLOBs" >
+    update purchase_order
+    set uuid = #{uuid},
+      qty_system_demand = #{qtySystemDemand},
+      qty_purchase_demand = #{qtyPurchaseDemand},
+      qty_purchased = #{qtyPurchased},
+      qty_received = #{qtyReceived},
+      purchase_price = #{purchasePrice},
+      target_warehouse_id = #{targetWarehouseId},
+      create_time = #{createTime},
+      purchase_time = #{purchaseTime},
+      update_time = #{updateTime},
+      complete_time = #{completeTime},
+      source_type = #{sourceType},
+      has_backorder = #{hasBackorder},
+      state = #{state},
+      sku_sale_price = #{skuSalePrice},
+      complete_user_id = #{completeUserId},
+      create_user_id = #{createUserId},
+      follow_user_id = #{followUserId},
+      purchase_user_id = #{purchaseUserId},
+      source_purchase_order_id = #{sourcePurchaseOrderId},
+      stock_keep_unit_id = #{stockKeepUnitId},
+      supply_order_id = #{supplyOrderId},
+      update_user_id = #{updateUserId},
+      purchase_company_name = #{purchaseCompanyName},
+      difficult_order = #{difficultOrder},
+      difficult_order_follower_id = #{difficultOrderFollowerId},
+      logistics_status = #{logisticsStatus},
+      qty_signed = #{qtySigned},
+      signed_time = #{signedTime},
+      signed_user_id = #{signedUserId},
+      complete_user_name = #{completeUserName},
+      create_user_name = #{createUserName},
+      difficult_order_follower_name = #{difficultOrderFollowerName},
+      follow_user_name = #{followUserName},
+      purchase_user_name = #{purchaseUserName},
+      signed_user_name = #{signedUserName},
+      update_user_name = #{updateUserName},
+      receive_user_name = #{receiveUserName},
+      receive_user_id = #{receiveUserId},
+      has_bought = #{hasBought},
+      top_source_purchase_order_id = #{topSourcePurchaseOrderId},
+      short_uuid = #{shortUuid},
+      is_exception = #{isException},
+      purchase_sku_barcode = #{purchaseSkuBarcode},
+      is_cooperative_supplier = #{isCooperativeSupplier},
+      prev_state = #{prevState},
+      supplier_uuid = #{supplierUuid},
+      sku_link_rel_id = #{skuLinkRelId},
+      source_purchase_order_uuid = #{sourcePurchaseOrderUuid},
+      top_source_purchase_order_uuid = #{topSourcePurchaseOrderUuid},
+      supplier_is_disposable = #{supplierIsDisposable},
+      quality_type = #{qualityType},
+      quality_score = #{qualityScore},
+      purchase_link = #{purchaseLink},
+      purchase_link_note = #{purchaseLinkNote}
+    where id = #{id}
+  </update>
+
+  <sql id="sql_where" >
+    <where >
+      <if test="uuid != null" >
+         and uuid = #{uuid}
+      </if>
+      <if test="qtySystemDemand != null" >
+         and qty_system_demand = #{qtySystemDemand}
+      </if>
+      <if test="qtyPurchaseDemand != null" >
+         and qty_purchase_demand = #{qtyPurchaseDemand}
+      </if>
+      <if test="qtyPurchased != null" >
+         and qty_purchased = #{qtyPurchased}
+      </if>
+      <if test="qtyReceived != null" >
+         and qty_received = #{qtyReceived}
+      </if>
+      <if test="purchasePrice != null" >
+         and purchase_price = #{purchasePrice}
+      </if>
+      <if test="targetWarehouseId != null" >
+         and target_warehouse_id = #{targetWarehouseId}
+      </if>
+      <if test="createTime != null" >
+         and create_time = #{createTime}
+      </if>
+      <if test="purchaseTime != null" >
+         and purchase_time = #{purchaseTime}
+      </if>
+      <if test="updateTime != null" >
+         and update_time = #{updateTime}
+      </if>
+      <if test="completeTime != null" >
+         and complete_time = #{completeTime}
+      </if>
+      <if test="sourceType != null" >
+         and source_type = #{sourceType}
+      </if>
+      <if test="hasBackorder != null" >
+         and has_backorder = #{hasBackorder}
+      </if>
+      <if test="state != null" >
+         and state = #{state}
+      </if>
+      <if test="skuSalePrice != null" >
+         and sku_sale_price = #{skuSalePrice}
+      </if>
+      <if test="completeUserId != null" >
+         and complete_user_id = #{completeUserId}
+      </if>
+      <if test="createUserId != null" >
+         and create_user_id = #{createUserId}
+      </if>
+      <if test="followUserId != null" >
+         and follow_user_id = #{followUserId}
+      </if>
+      <if test="purchaseUserId != null" >
+         and purchase_user_id = #{purchaseUserId}
+      </if>
+      <if test="sourcePurchaseOrderId != null" >
+         and source_purchase_order_id = #{sourcePurchaseOrderId}
+      </if>
+      <if test="stockKeepUnitId != null" >
+         and stock_keep_unit_id = #{stockKeepUnitId}
+      </if>
+      <if test="supplyOrderId != null" >
+         and supply_order_id = #{supplyOrderId}
+      </if>
+      <if test="updateUserId != null" >
+         and update_user_id = #{updateUserId}
+      </if>
+      <if test="purchaseCompanyName != null" >
+         and purchase_company_name = #{purchaseCompanyName}
+      </if>
+      <if test="difficultOrder != null" >
+         and difficult_order = #{difficultOrder}
+      </if>
+      <if test="difficultOrderFollowerId != null" >
+         and difficult_order_follower_id = #{difficultOrderFollowerId}
+      </if>
+      <if test="logisticsStatus != null" >
+         and logistics_status = #{logisticsStatus}
+      </if>
+      <if test="qtySigned != null" >
+         and qty_signed = #{qtySigned}
+      </if>
+      <if test="signedTime != null" >
+         and signed_time = #{signedTime}
+      </if>
+      <if test="signedUserId != null" >
+         and signed_user_id = #{signedUserId}
+      </if>
+      <if test="completeUserName != null" >
+         and complete_user_name = #{completeUserName}
+      </if>
+      <if test="createUserName != null" >
+         and create_user_name = #{createUserName}
+      </if>
+      <if test="difficultOrderFollowerName != null" >
+         and difficult_order_follower_name = #{difficultOrderFollowerName}
+      </if>
+      <if test="followUserName != null" >
+         and follow_user_name = #{followUserName}
+      </if>
+      <if test="purchaseUserName != null" >
+         and purchase_user_name = #{purchaseUserName}
+      </if>
+      <if test="signedUserName != null" >
+         and signed_user_name = #{signedUserName}
+      </if>
+      <if test="updateUserName != null" >
+         and update_user_name = #{updateUserName}
+      </if>
+      <if test="receiveUserName != null" >
+         and receive_user_name = #{receiveUserName}
+      </if>
+      <if test="receiveUserId != null" >
+         and receive_user_id = #{receiveUserId}
+      </if>
+      <if test="hasBought != null" >
+         and has_bought = #{hasBought}
+      </if>
+      <if test="topSourcePurchaseOrderId != null" >
+         and top_source_purchase_order_id = #{topSourcePurchaseOrderId}
+      </if>
+      <if test="shortUuid != null" >
+         and short_uuid = #{shortUuid}
+      </if>
+      <if test="isException != null" >
+         and is_exception = #{isException}
+      </if>
+      <if test="purchaseSkuBarcode != null" >
+         and purchase_sku_barcode = #{purchaseSkuBarcode}
+      </if>
+      <if test="isCooperativeSupplier != null" >
+         and is_cooperative_supplier = #{isCooperativeSupplier}
+      </if>
+      <if test="prevState != null" >
+         and prev_state = #{prevState}
+      </if>
+      <if test="supplierUuid != null" >
+         and supplier_uuid = #{supplierUuid}
+      </if>
+      <if test="skuLinkRelId != null" >
+         and sku_link_rel_id = #{skuLinkRelId}
+      </if>
+      <if test="sourcePurchaseOrderUuid != null" >
+         and source_purchase_order_uuid = #{sourcePurchaseOrderUuid}
+      </if>
+      <if test="topSourcePurchaseOrderUuid != null" >
+         and top_source_purchase_order_uuid = #{topSourcePurchaseOrderUuid}
+      </if>
+      <if test="supplierIsDisposable != null" >
+         and supplier_is_disposable = #{supplierIsDisposable}
+      </if>
+      <if test="qualityType != null" >
+         and quality_type = #{qualityType}
+      </if>
+      <if test="qualityScore != null" >
+         and quality_score = #{qualityScore}
+      </if>
+    </where>
+  </sql>
+
+  <select id="getList" resultMap="BaseResultMap" parameterType="com.clubfactory.center.goods.entity.PurchaseOrder" >
+      select
+        <include refid="Base_Column_List"/>
+      from purchase_order
+      <include refid="sql_where" />
+  </select>
+
+</mapper>

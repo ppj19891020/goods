@@ -5,6 +5,7 @@ import com.dangdang.ddframe.job.api.ShardingContext;
 import com.dangdang.ddframe.job.api.simple.SimpleJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 /**
  * 描述:
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
  * @author pangpeijie
  * @create 2018-05-21 10:17
  */
+@Component(value = "updateGoodsPriceJob")
 public class UpdateGoodsPriceJob implements SimpleJob {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(UpdateGoodsPriceJob.class);
