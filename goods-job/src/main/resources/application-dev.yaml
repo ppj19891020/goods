@@ -34,12 +34,14 @@ spring:
         validation-query: select 1
         test-while-idle: true
 
+#当当elastic-job配置
 elastic-job:
   regCenter:
     serverList: 34.214.167.47:2181,34.218.222.177:2181,54.202.149.169:2181
     namespace: dev-googs-jobss
-
-testSimpleJob:
+#定时任务配置
+##1、全量价格更新定时任务
+updateGoodsPriceJob:
   cron: 0/59 * * * * ?
   shardingTotalCount: 3
   shardingItemParameters: 0=0,1=1,2=2

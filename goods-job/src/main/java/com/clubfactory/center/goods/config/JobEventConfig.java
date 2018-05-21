@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 
 /**
  * 描述:
- *
+ *  JOB任务配置
  * @author pangpeijie
  * @create 2018-05-21 11:39
  */

@@ -21,7 +21,7 @@ import javax.annotation.Resource;
  * @create 2018-05-21 10:25
  */
 @Configuration
-public class TestSimpleJobConfig {
+public class UpdateGoodsPriceJobConfig {
 
     @Resource
     private ZookeeperRegistryCenter regCenter;
@@ -31,13 +31,13 @@ public class TestSimpleJobConfig {
 
     @Bean
     public SimpleJob simpleJob(){
-        return new TestSimpleJob();
+        return new UpdateGoodsPriceJob();
     }
 
     @Bean(initMethod = "init")
-    public JobScheduler simpleJobScheduler(final SimpleJob simpleJob, @Value("${testSimpleJob.cron}") final String cron,
-                                           @Value("${testSimpleJob.shardingTotalCount}") final int shardingTotalCount,
-                                           @Value("${testSimpleJob.shardingItemParameters}") final String shardingItemParameters){
+    public JobScheduler simpleJobScheduler(final SimpleJob simpleJob, @Value("${updateGoodsPriceJob.cron}") final String cron,
+                                           @Value("${updateGoodsPriceJob.shardingTotalCount}") final int shardingTotalCount,
+                                           @Value("${updateGoodsPriceJob.shardingItemParameters}") final String shardingItemParameters){
         return new SpringJobScheduler(simpleJob, regCenter, getLiteJobConfiguration(simpleJob.getClass(), cron, shardingTotalCount, shardingItemParameters), jobEventConfiguration);
     }
 
