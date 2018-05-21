@@ -63,6 +63,14 @@
     <result column="purchase_link_note" property="purchaseLinkNote" jdbcType="LONGVARCHAR" />
   </resultMap>
 
+    <resultMap id="PurchaseOrderDTO" type="com.clubfactory.center.goods.dto.PurchaseOrderDTO">
+        <result column="item_no" property="itemNo"/>
+        <result column="purchase_price" property="purchasePrice"/>
+        <result column="create_time" property="createTime"/>
+        <result column="state" property="state"/>
+        <result column="purchase_note" property="purchaseNote"/>
+    </resultMap>
+
   <sql id="Base_Column_List" >
     id, uuid, qty_system_demand, qty_purchase_demand, qty_purchased, qty_received, purchase_price, 
     target_warehouse_id, create_time, purchase_time, update_time, complete_time, source_type, 
@@ -840,6 +848,30 @@
         <include refid="Base_Column_List"/>
       from purchase_order
       <include refid="sql_where" />
+  </select>
+
+  <!-- 获取最近几天采购单信息 数据分片-->
+  <select id="getLastPurchaseOrder" resultMap="PurchaseOrderDTO">
+    SELECT
+    product.item_no,
+    po.purchase_price,
+    po.create_time,
+    po.state,
+    po_note.purchase_note
+    FROM
+    purchase_order AS po
+    JOIN stock_keep_unit AS sku ON sku.id = po.stock_keep_unit_id
+    JOIN product ON product.id = sku.product_id
+    LEFT JOIN purchase_order_notes AS po_note ON po_note.purchase_order_id = po.id
+    WHERE
+    po.purchase_price IS NOT NULL
+    AND po.purchase_price <![CDATA[ > ]]> 0
+    AND po.purchase_price  <![CDATA[ < ]]> 10000
+    AND po.source_type IN(0, 2)
+    AND supplier_is_disposable = 0
+    AND po.create_time <![CDATA[ >= ]]> #{lastDate}
+    AND po.state NOT IN(0, 7)
+    AND po.id % #{shardingTotalCount} = #{shardingItem}
   </select>
 
 </mapper>

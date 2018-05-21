@@ -51,6 +51,23 @@ spring:
         max-wait: 60000
         validation-query: select 1
         test-while-idle: true
+    ##萧山仓库
+    idooxs:
+      url: jdbc:mysql://rr-bp18jyv3z53fstco6o.mysql.rds.aliyuncs.com:3306/idoo_xs?useSSL=false&useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&allowMultiQueries=true&tinyInt1isBit=false
+      username: data_bi
+      password: ftDz2Agg4R3zRcwt
+      driver-class-name: com.mysql.jdbc.Driver
+      druid:
+        min-idle: 1
+        max-active: 300
+        filter:
+          stat:
+            log-slow-sql: true
+            slow-sql-millis: 50
+        initial-size: 1
+        max-wait: 60000
+        validation-query: select 1
+        test-while-idle: true
 
 #当当elastic-job配置
 elastic-job:

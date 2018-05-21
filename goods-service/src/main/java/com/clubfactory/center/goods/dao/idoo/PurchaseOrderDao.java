@@ -1,7 +1,23 @@
 package com.clubfactory.center.goods.dao.idoo;
 
-import com.clubfactory.core.base.BaseDao;
+import com.clubfactory.center.goods.dto.PurchaseOrderDTO;
 import com.clubfactory.center.goods.entity.PurchaseOrder;
+import com.clubfactory.core.base.BaseDao;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
+/**
+ * 通用仓库接口
+ */
 public interface PurchaseOrderDao extends BaseDao<PurchaseOrder> {
+
+    /**
+     * 查询最近几天的采购单
+     * @param lastDate
+     * @return
+     */
+    List<PurchaseOrderDTO> getLastPurchaseOrder(@Param("lastDate")String lastDate,
+                                                @Param("shardingTotalCount")int shardingTotalCount,@Param("shardingItem")int shardingItem);
+
 }

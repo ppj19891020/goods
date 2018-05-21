@@ -1,4 +1,10 @@
 spring:
   profiles:
     active: dev
-debug: false
+
+debug: true
+
+logging:
+  level:
+    com:
+      clubfactory: debug
