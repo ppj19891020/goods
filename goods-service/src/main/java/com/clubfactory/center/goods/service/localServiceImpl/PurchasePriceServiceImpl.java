@@ -1,8 +1,11 @@
 package com.clubfactory.center.goods.service.localServiceImpl;
 
+import com.alibaba.fastjson.JSON;
 import com.clubfactory.center.goods.config.dynamicdatasource.IdooDataSourceKey;
+import com.clubfactory.center.goods.dao.price.PricePurchaseRelatedDao;
 import com.clubfactory.center.goods.dto.PurchaseOrderDTO;
 import com.clubfactory.center.goods.dto.PurchasePriceDTO;
+import com.clubfactory.center.goods.entity.PricePurchaseRelated;
 import com.clubfactory.center.goods.service.localService.PurchaseOrderService;
 import com.clubfactory.center.goods.service.localService.PurchasePriceService;
 import org.slf4j.Logger;
@@ -33,6 +36,9 @@ public class PurchasePriceServiceImpl implements PurchasePriceService {
     @Autowired
     private PurchaseOrderService purchaseOrderService;
 
+    @Autowired
+    private PricePurchaseRelatedDao pricePurchaseRelatedDao;
+
 
     /**
      * 更新采购价格
@@ -62,7 +68,32 @@ public class PurchasePriceServiceImpl implements PurchasePriceService {
         });
 
         //采购价更新
+        List<String> noPurchasePriceNullItemoList = new ArrayList<>();//没有采购价商品编码列表
+        List<PurchaseOrderDTO> updatePurchasePrice = new ArrayList<>();//更新最新采购价
+        List<PricePurchaseRelated> pricePurchaseRelateds = pricePurchaseRelatedDao.getAllHavePurchase(shardingTotalCount,shardingItem);
+        pricePurchaseRelateds.stream().forEach(t->{
+            if(null == purchasePrice.get(t.getProductNo())){
+                //该商品编码有采购价，但是不存在需要更新的商品编码
+                noPurchasePriceNullItemoList.add(t.getProductNo());
+            }else{
+                PurchaseOrderDTO purchaseOrderDTO = new PurchaseOrderDTO();
+                purchaseOrderDTO.setItemNo(t.getProductNo());
+                purchaseOrderDTO.setPurchasePrice(t.getPurchasePrice());
+                updatePurchasePrice.add(purchaseOrderDTO);
+            }
+        });
 
+        //更新采购价格为null
+        if(null != noPurchasePriceNullItemoList && noPurchasePriceNullItemoList.size() > 0){
+            pricePurchaseRelatedDao.updatePurchasePriceNullByItemNo(noPurchasePriceNullItemoList);
+        }
+        LOGGER.info("更新采购价格为null,list:{}",JSON.toJSON(noPurchasePriceNullItemoList));
+        //更新最新采购价
+        if(null != updatePurchasePrice && updatePurchasePrice.size() > 0){
+            updatePurchasePrice.stream().forEach(t->{
+                pricePurchaseRelatedDao.saveOrUpdatePurchasePrice(t);
+            });
+        }
         LOGGER.info("更新采购价完成");
     }
 
@@ -76,13 +107,13 @@ public class PurchasePriceServiceImpl implements PurchasePriceService {
 
         //余杭仓库的采购单列表
         List<PurchaseOrderDTO> purchaseOrderDTOS = purchaseOrderService.getLastPurchaseOrder(IdooDataSourceKey.YUHANG,localDate.toString(),shardingTotalCount,shardingItem);
-        LOGGER.info("查询分片采购单totalCout:{} shardingItem:{} 余杭采购单数量：{}",shardingTotalCount,shardingItem,purchaseOrderDTOS.size());
+        LOGGER.info("获取最新7天采购单-查询分片采购单totalCout:{} shardingItem:{} 余杭采购单数量：{}",shardingTotalCount,shardingItem,purchaseOrderDTOS.size());
         //萧山仓库的采购单列表
         List<PurchaseOrderDTO> purchaseXsOrderDTOS = purchaseOrderService.getLastPurchaseOrder(IdooDataSourceKey.XIAOSHAN,localDate.toString(),shardingTotalCount,shardingItem);
-        LOGGER.info("查询分片采购单totalCout:{} shardingItem:{} 萧山采购单数量：{}",shardingTotalCount,shardingItem,purchaseXsOrderDTOS.size());
+        LOGGER.info("获取最新7天采购单-查询分片采购单totalCout:{} shardingItem:{} 萧山采购单数量：{}",shardingTotalCount,shardingItem,purchaseXsOrderDTOS.size());
         //心怡仓库的采购单列表
         List<PurchaseOrderDTO> purchaseHnOrderDTOS = purchaseOrderService.getLastPurchaseOrder(IdooDataSourceKey.XINYI,localDate.toString(),shardingTotalCount,shardingItem);
-        LOGGER.info("查询分片采购单totalCout:{} shardingItem:{} 心怡采购单数量：{}",shardingTotalCount,shardingItem,purchaseHnOrderDTOS.size());
+        LOGGER.info("获取最新7天采购单-查询分片采购单totalCout:{} shardingItem:{} 心怡采购单数量：{}",shardingTotalCount,shardingItem,purchaseHnOrderDTOS.size());
 
         //根据商品编码整理采购单
         this.converPurchasePrice(purchasePriceHashMap,purchaseOrderDTOS);
@@ -101,13 +132,13 @@ public class PurchasePriceServiceImpl implements PurchasePriceService {
     public HashMap<String, List<PurchasePriceDTO>> getLatestPurchasePrice(int shardingTotalCount, int shardingItem) {
         //余杭仓库的采购单列表
         List<PurchaseOrderDTO> purchaseOrderDTOS = purchaseOrderService.getLatestPurchasePrice(IdooDataSourceKey.YUHANG,shardingTotalCount,shardingItem);
-        LOGGER.info("最近采购单=查询分片采购单totalCout:{} shardingItem:{} 余杭采购单数量：{}",shardingTotalCount,shardingItem,purchaseOrderDTOS.size());
+        LOGGER.info("获取最近的采购价格-查询分片采购单totalCout:{} shardingItem:{} 余杭采购单数量：{}",shardingTotalCount,shardingItem,purchaseOrderDTOS.size());
         //萧山仓库的采购单列表
         List<PurchaseOrderDTO> purchaseXsOrderDTOS = purchaseOrderService.getLatestPurchasePrice(IdooDataSourceKey.XIAOSHAN,shardingTotalCount,shardingItem);
-        LOGGER.info("最近采购单=查询分片采购单totalCout:{} shardingItem:{} 萧山采购单数量：{}",shardingTotalCount,shardingItem,purchaseXsOrderDTOS.size());
+        LOGGER.info("获取最近的采购价格-查询分片采购单totalCout:{} shardingItem:{} 萧山采购单数量：{}",shardingTotalCount,shardingItem,purchaseXsOrderDTOS.size());
         //心怡仓库的采购单列表
         List<PurchaseOrderDTO> purchaseHnOrderDTOS = purchaseOrderService.getLatestPurchasePrice(IdooDataSourceKey.XINYI,shardingTotalCount,shardingItem);
-        LOGGER.info("最近采购单=查询分片采购单totalCout:{} shardingItem:{} 心怡采购单数量：{}",shardingTotalCount,shardingItem,purchaseHnOrderDTOS.size());
+        LOGGER.info("获取最近的采购价格-查询分片采购单totalCout:{} shardingItem:{} 心怡采购单数量：{}",shardingTotalCount,shardingItem,purchaseHnOrderDTOS.size());
 
         //采购商品-商品编码/采购列表
         HashMap<String,List<PurchasePriceDTO>> purchasePriceHashMap = new HashMap<>(100000);

@@ -1,10 +1,10 @@
-#价格数据源、elastic-job数据源
+#价格数据源
 spring:
   datasource:
     price:
-      url: jdbc:mysql://114.55.75.116:3306/order_center?useSSL=false&useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&allowMultiQueries=true&tinyInt1isBit=false
+      url: jdbc:mysql://127.0.0.1:3306/price?useSSL=false&useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&allowMultiQueries=true&tinyInt1isBit=false
       username: root
-      password: C#m9klT@n4!N3m
+      password: root
       driver-class-name: com.mysql.jdbc.Driver
       druid:
         min-idle: 1
@@ -17,7 +17,7 @@ spring:
         max-wait: 60000
         validation-query: select 1
         test-while-idle: true
-    ##当当定时任务job执行情况
+    ##elastic_job数据库
     elastic-job:
       url: jdbc:mysql://114.55.75.116:3306/elastic_job?useSSL=false&useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&allowMultiQueries=true&tinyInt1isBit=false
       username: root
@@ -94,12 +94,12 @@ elastic-job:
   #定时任务配置
   ##1、全量价格更新定时任务
   updateGoodsPriceJob:
-    cron: 0/30 * * * * ?
-    shardingTotalCount: 3
-    shardingItemParameters: 0=0,1=1,2=2
+    cron: 0/59 * * * * ?
+    shardingTotalCount: 1
+    shardingItemParameters: 0=0
   ##2、采购价更新定时任务
   updatePurchasePriceJob:
-    cron: 0/30 * * * * ?
-    shardingTotalCount: 3
-    shardingItemParameters: 0=0,1=1,2=2
+    cron: 0 1-2 * * * ?
+    shardingTotalCount: 1
+    shardingItemParameters: 0=0
 

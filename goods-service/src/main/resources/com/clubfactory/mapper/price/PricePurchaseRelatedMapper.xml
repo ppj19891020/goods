@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.clubfactory.center.goods.dao.price.PricePurchaseRelatedDao" >
+  <resultMap id="BaseResultMap" type="com.clubfactory.center.goods.entity.PricePurchaseRelated" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="product_no" property="productNo" jdbcType="VARCHAR" />
+    <result column="purchase_price" property="purchasePrice" jdbcType="DOUBLE" />
+    <result column="operation_price" property="operationPrice" jdbcType="DOUBLE" />
+    <result column="sku_link_price" property="skuLinkPrice" jdbcType="DOUBLE" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, product_no, purchase_price, operation_price, sku_link_price, update_time, create_time
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from price_purchase_related
+    where id = #{id}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from price_purchase_related
+    where id = #{id}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.clubfactory.center.goods.entity.PricePurchaseRelated" >
+    insert into price_purchase_related
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="productNo != null" >
+        product_no,
+      </if>
+      <if test="purchasePrice != null" >
+        purchase_price,
+      </if>
+      <if test="operationPrice != null" >
+        operation_price,
+      </if>
+      <if test="skuLinkPrice != null" >
+        sku_link_price,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="productNo != null" >
+        #{productNo},
+      </if>
+      <if test="purchasePrice != null" >
+        #{purchasePrice},
+      </if>
+      <if test="operationPrice != null" >
+        #{operationPrice},
+      </if>
+      <if test="skuLinkPrice != null" >
+        #{skuLinkPrice},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime},
+      </if>
+      <if test="createTime != null" >
+        #{createTime},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.clubfactory.center.goods.entity.PricePurchaseRelated" >
+    update price_purchase_related
+    <set >
+      <if test="productNo != null" >
+        product_no = #{productNo},
+      </if>
+      <if test="purchasePrice != null" >
+        purchase_price = #{purchasePrice},
+      </if>
+      <if test="operationPrice != null" >
+        operation_price = #{operationPrice},
+      </if>
+      <if test="skuLinkPrice != null" >
+        sku_link_price = #{skuLinkPrice},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <sql id="sql_where" >
+    <where >
+      <if test="productNo != null" >
+         and product_no = #{productNo}
+      </if>
+      <if test="purchasePrice != null" >
+         and purchase_price = #{purchasePrice}
+      </if>
+      <if test="operationPrice != null" >
+         and operation_price = #{operationPrice}
+      </if>
+      <if test="skuLinkPrice != null" >
+         and sku_link_price = #{skuLinkPrice}
+      </if>
+      <if test="updateTime != null" >
+         and update_time = #{updateTime}
+      </if>
+      <if test="createTime != null" >
+         and create_time = #{createTime}
+      </if>
+    </where>
+  </sql>
+
+  <select id="getList" resultMap="BaseResultMap" parameterType="com.clubfactory.center.goods.entity.PricePurchaseRelated" >
+     select * from price_purchase_related
+    <include refid="sql_where" />
+  </select>
+
+  <!-- 获取有采购价的商品编码 -->
+  <select id="getAllHavePurchase" resultMap="BaseResultMap">
+    SELECT
+        product_no
+    FROM
+        price_purchase_related
+    WHERE
+        purchase_price IS NOT NULL
+    AND ASCII(product_no) % #{shardingTotalCount} = #{shardingItem}
+  </select>
+
+  <!-- 更新采购价位null -->
+  <update id="updatePurchasePriceNullByItemNo" parameterType="java.util.List">
+    UPDATE price_purchase_related
+    SET purchase_price = NULL
+    WHERE
+        product_no IN
+        <foreach collection="noPurchasePriceNullItemoList" index="index" item="item" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+  </update>
+
+  <!-- 保存或者更新采购价格 -->
+  <insert id="saveOrUpdatePurchasePrice" parameterType="com.clubfactory.center.goods.dto.PurchaseOrderDTO">
+    INSERT INTO price_purchase_related(product_no, purchase_price)
+    VALUES
+        (#{itemNo},#{purchasePrice})ON DUPLICATE KEY UPDATE purchase_price = VALUES (purchase_price)
+  </insert>
+
+</mapper>

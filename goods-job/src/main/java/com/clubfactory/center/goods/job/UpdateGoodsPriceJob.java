@@ -1,6 +1,5 @@
 package com.clubfactory.center.goods.job;
 
-import com.alibaba.fastjson.JSON;
 import com.dangdang.ddframe.job.api.ShardingContext;
 import com.dangdang.ddframe.job.api.simple.SimpleJob;
 import org.slf4j.Logger;
@@ -20,6 +19,6 @@ public class UpdateGoodsPriceJob implements SimpleJob {
 
     @Override
     public void execute(ShardingContext shardingContext) {
-        LOGGER.info("商品价格更新定时任务，context:{}",JSON.toJSONString(shardingContext));
+//        LOGGER.info("商品价格更新定时任务，context:{}",JSON.toJSONString(shardingContext));
     }
 }
