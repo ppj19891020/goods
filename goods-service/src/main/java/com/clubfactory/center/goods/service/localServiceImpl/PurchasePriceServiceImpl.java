@@ -71,6 +71,7 @@ public class PurchasePriceServiceImpl implements PurchasePriceService {
         List<String> noPurchasePriceNullItemoList = new ArrayList<>();//没有采购价商品编码列表
         List<PurchaseOrderDTO> updatePurchasePrice = new ArrayList<>();//更新最新采购价
         List<PricePurchaseRelated> pricePurchaseRelateds = pricePurchaseRelatedDao.getAllHavePurchase(shardingTotalCount,shardingItem);
+
         pricePurchaseRelateds.stream().forEach(t->{
             if(null == purchasePrice.get(t.getProductNo())){
                 //该商品编码有采购价，但是不存在需要更新的商品编码
@@ -78,11 +79,12 @@ public class PurchasePriceServiceImpl implements PurchasePriceService {
             }else{
                 PurchaseOrderDTO purchaseOrderDTO = new PurchaseOrderDTO();
                 purchaseOrderDTO.setItemNo(t.getProductNo());
-                purchaseOrderDTO.setPurchasePrice(t.getPurchasePrice());
+                purchaseOrderDTO.setPurchasePrice(purchasePrice.get(t.getProductNo()).doubleValue());
                 updatePurchasePrice.add(purchaseOrderDTO);
             }
         });
 
+        LOGGER.info("开始更新价格");
         //更新采购价格为null
         if(null != noPurchasePriceNullItemoList && noPurchasePriceNullItemoList.size() > 0){
             pricePurchaseRelatedDao.updatePurchasePriceNullByItemNo(noPurchasePriceNullItemoList);

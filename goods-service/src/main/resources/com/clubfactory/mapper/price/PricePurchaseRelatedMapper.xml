@@ -144,7 +144,7 @@
   <!-- 更新采购价位null -->
   <update id="updatePurchasePriceNullByItemNo" parameterType="java.util.List">
     UPDATE price_purchase_related
-    SET purchase_price = NULL
+    SET purchase_price = NULL,update_time = NOW()
     WHERE
         product_no IN
         <foreach collection="noPurchasePriceNullItemoList" index="index" item="item" open="(" separator="," close=")">
