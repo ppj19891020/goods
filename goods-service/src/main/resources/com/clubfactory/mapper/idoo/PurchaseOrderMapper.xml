@@ -874,4 +874,48 @@
     AND po.id % #{shardingTotalCount} = #{shardingItem}
   </select>
 
+  <!-- 最近一次采购价格数据 -->
+  <select id="getLatestPurchasePrice" resultMap="PurchaseOrderDTO">
+    SELECT
+    *
+    FROM
+    (
+    SELECT
+    product.item_no,
+    po.purchase_price,
+    po.create_time,
+    po.id AS pid
+    FROM
+    purchase_order AS po
+    JOIN stock_keep_unit AS sku ON sku.id = po.stock_keep_unit_id
+    JOIN product ON product.id = sku.product_id
+    WHERE
+    po.purchase_price IS NOT NULL
+    AND po.purchase_price <![CDATA[ > ]]> 0
+    AND po.purchase_price <![CDATA[ < ]]> 10000
+    AND po.state NOT IN(0, 6, 7)
+    AND supplier_is_disposable = 0
+    AND po.source_type IN(0, 2)
+    )tem1
+    JOIN(
+    SELECT
+    MAX(po.id)AS id
+    FROM
+    purchase_order po
+    JOIN stock_keep_unit AS sku ON sku.id = po.stock_keep_unit_id
+    JOIN product ON product.id = sku.product_id
+    WHERE
+    po.purchase_price IS NOT NULL
+    AND po.purchase_price <![CDATA[ > ]]> 0
+    AND po.purchase_price <![CDATA[ < ]]> 10000
+    AND po.state NOT IN(0, 6, 7)
+    AND po.source_type IN(0, 2)
+    AND supplier_is_disposable = 0
+    GROUP BY
+    product.item_no
+    )mm ON tem1.pid = mm.id
+    WHERE
+    tem1.pid % #{shardingTotalCount} = #{shardingItem}
+  </select>
+
 </mapper>

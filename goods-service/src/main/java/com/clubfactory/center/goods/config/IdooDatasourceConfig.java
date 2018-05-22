@@ -52,6 +52,16 @@ public class IdooDatasourceConfig {
     }
 
     /**
+     * 心怡数据源
+     * @return
+     */
+    @Bean(name = "idooHnDataSource")
+    @ConfigurationProperties("spring.datasource.idoohn")
+    public DataSource idooHnDataSource(){
+        return new DruidDataSource();
+    }
+
+    /**
      * 动态数据源
      * @return
      */
@@ -61,6 +71,7 @@ public class IdooDatasourceConfig {
         Map<Object, Object> dataSourceMap = new HashMap<>(4);
         dataSourceMap.put(IdooDataSourceKey.YUHANG.getCode(), idooDataSource());
         dataSourceMap.put(IdooDataSourceKey.XIAOSHAN.getCode(), idooXsDataSource());
+        dataSourceMap.put(IdooDataSourceKey.XINYI.getCode(), idooHnDataSource());
         // 默认指定的数据源
         dynamicRoutingDataSource.setDefaultTargetDataSource(idooDataSource());
         // 指定的数据源

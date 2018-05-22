@@ -20,4 +20,11 @@ public interface PurchaseOrderDao extends BaseDao<PurchaseOrder> {
     List<PurchaseOrderDTO> getLastPurchaseOrder(@Param("lastDate")String lastDate,
                                                 @Param("shardingTotalCount")int shardingTotalCount,@Param("shardingItem")int shardingItem);
 
+    /**
+     * 获取最近一次采购价格数据
+     * @param shardingTotalCount
+     * @param shardingItem
+     * @return
+     */
+    List<PurchaseOrderDTO> getLatestPurchasePrice(@Param("shardingTotalCount")int shardingTotalCount,@Param("shardingItem")int shardingItem);
 }

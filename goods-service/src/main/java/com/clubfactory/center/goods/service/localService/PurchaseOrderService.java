@@ -20,4 +20,12 @@ public interface PurchaseOrderService {
      */
     List<PurchaseOrderDTO> getLastPurchaseOrder(IdooDataSourceKey idooDataSourceKey, String lastDate, int shardingTotalCount, int shardingItem);
 
+    /**
+     * 获取最近一次采购价格数据
+     * @param shardingTotalCount
+     * @param shardingItem
+     * @return
+     */
+    List<PurchaseOrderDTO> getLatestPurchasePrice(IdooDataSourceKey idooDataSourceKey,int shardingTotalCount,int shardingItem);
+
 }

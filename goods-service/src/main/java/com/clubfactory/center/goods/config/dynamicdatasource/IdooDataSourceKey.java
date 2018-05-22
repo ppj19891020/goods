@@ -29,7 +29,6 @@ public enum IdooDataSourceKey {
     }
 
     public Integer getCode() {
-
         return code;
     }
 

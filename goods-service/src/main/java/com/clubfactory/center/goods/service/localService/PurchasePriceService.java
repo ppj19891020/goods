@@ -1,5 +1,10 @@
 package com.clubfactory.center.goods.service.localService;
 
+import com.clubfactory.center.goods.dto.PurchasePriceDTO;
+
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * 描述:
  *  采购价格service
@@ -14,4 +19,19 @@ public interface PurchasePriceService {
      * @param shardingItem 当前分片数
      */
     void updatePurchasePrice(int shardingTotalCount,int shardingItem);
+
+    /**
+     * 获取最近7天的采购单，商品编码为key，value为采购信息列表，并按照采购时间倒叙排序
+     * @return
+     */
+    HashMap<String,List<PurchasePriceDTO>> getLastSevenDaysPurchasePrice(int shardingTotalCount,int shardingItem);
+
+    /**
+     * 获取最近的采购价格
+     * @param shardingTotalCount
+     * @param shardingItem
+     * @return
+     */
+    HashMap<String,List<PurchasePriceDTO>> getLatestPurchasePrice(int shardingTotalCount,int shardingItem);
+
 }

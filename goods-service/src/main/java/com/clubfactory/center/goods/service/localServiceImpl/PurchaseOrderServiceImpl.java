@@ -27,4 +27,10 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         DynamicIdooDataSourceContextHolder.setDataSourceKey(idooDataSourceKey);
         return purchaseOrderDao.getLastPurchaseOrder(lastDate,shardingTotalCount,shardingItem);
     }
+
+    @Override
+    public List<PurchaseOrderDTO> getLatestPurchasePrice(IdooDataSourceKey idooDataSourceKey, int shardingTotalCount, int shardingItem) {
+        DynamicIdooDataSourceContextHolder.setDataSourceKey(idooDataSourceKey);
+        return purchaseOrderDao.getLatestPurchasePrice(shardingTotalCount,shardingItem);
+    }
 }
