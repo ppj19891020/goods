@@ -8,10 +8,12 @@ import com.clubfactory.center.goods.dto.PurchasePriceDTO;
 import com.clubfactory.center.goods.entity.PricePurchaseRelated;
 import com.clubfactory.center.goods.service.localService.PurchaseOrderService;
 import com.clubfactory.center.goods.service.localService.PurchasePriceService;
+import com.clubfactory.core.utils.MathUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -45,28 +47,32 @@ public class PurchasePriceServiceImpl implements PurchasePriceService {
      */
     @Override
     public void updatePurchasePrice(int shardingTotalCount,int shardingItem) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         //最近7天的采购件
         HashMap<String,List<PurchasePriceDTO>> purchasePriceHashMap = this.getLastSevenDaysPurchasePrice(shardingTotalCount,shardingItem);
+        stopWatch.stop();
         //获取最近的采购价格
         HashMap<String,List<PurchasePriceDTO>> latestProductNoPurchasePriceMap = this.getLatestPurchasePrice(shardingTotalCount,shardingItem);
-
+        stopWatch.stop();
         //最终的采购价
         final HashMap<String,Double> purchasePrice = new HashMap<>(purchasePriceHashMap.size());
         //最近七天采购的商品，采购价求均值
         purchasePriceHashMap.forEach((k,v)->{
             OptionalDouble optionalDouble = v.stream().mapToDouble(t->t.getPurchasePrice()).average();
             if(optionalDouble.isPresent()){
-                purchasePrice.put(k,optionalDouble.getAsDouble());
+                purchasePrice.put(k,MathUtil.doubleScale(optionalDouble.getAsDouble()));
             }
         });
+        stopWatch.stop();
         //最近七天无采购记录，取最近一次采购价
         latestProductNoPurchasePriceMap.forEach((k,v)->{
             if(null == purchasePrice.get(k)){
                 OptionalDouble optionalDouble = v.stream().mapToDouble(t->t.getPurchasePrice()).average();
-                purchasePrice.put(k,optionalDouble.getAsDouble());
+                purchasePrice.put(k,MathUtil.doubleScale(optionalDouble.getAsDouble()));
             }
         });
-
+        stopWatch.stop();
         //采购价更新
         List<String> noPurchasePriceNullItemoList = new ArrayList<>();//没有采购价商品编码列表
         List<PurchaseOrderDTO> updatePurchasePrice = new ArrayList<>();//更新最新采购价
@@ -84,11 +90,13 @@ public class PurchasePriceServiceImpl implements PurchasePriceService {
             }
         });
 
+        stopWatch.stop();
         LOGGER.info("开始更新价格");
         //更新采购价格为null
         if(null != noPurchasePriceNullItemoList && noPurchasePriceNullItemoList.size() > 0){
             pricePurchaseRelatedDao.updatePurchasePriceNullByItemNo(noPurchasePriceNullItemoList);
         }
+        stopWatch.stop();
         LOGGER.info("更新采购价格为null,list:{}",JSON.toJSON(noPurchasePriceNullItemoList));
         //更新最新采购价
         if(null != updatePurchasePrice && updatePurchasePrice.size() > 0){
@@ -96,7 +104,8 @@ public class PurchasePriceServiceImpl implements PurchasePriceService {
                 pricePurchaseRelatedDao.saveOrUpdatePurchasePrice(t);
             });
         }
-        LOGGER.info("更新采购价完成");
+        stopWatch.stop();
+        LOGGER.info("更新采购价完成,定时任务耗时:{}",stopWatch.prettyPrint());
     }
 
     @Override

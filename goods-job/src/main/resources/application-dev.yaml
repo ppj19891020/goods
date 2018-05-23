@@ -8,7 +8,7 @@ spring:
       driver-class-name: com.mysql.jdbc.Driver
       druid:
         min-idle: 1
-        max-active: 300
+        max-active: 10
         filter:
           stat:
             log-slow-sql: true
@@ -19,13 +19,13 @@ spring:
         test-while-idle: true
     ##elastic_job数据库
     elastic-job:
-      url: jdbc:mysql://114.55.75.116:3306/elastic_job?useSSL=false&useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&allowMultiQueries=true&tinyInt1isBit=false
+      url: jdbc:mysql://127.0.0.1:3306/elastic_job?useSSL=false&useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&allowMultiQueries=true&tinyInt1isBit=false
       username: root
-      password: C#m9klT@n4!N3m
+      password: root
       driver-class-name: com.mysql.jdbc.Driver
       druid:
         min-idle: 1
-        max-active: 300
+        max-active: 10
         filter:
           stat:
             log-slow-sql: true
@@ -42,7 +42,7 @@ spring:
       driver-class-name: com.mysql.jdbc.Driver
       druid:
         min-idle: 1
-        max-active: 300
+        max-active: 10
         filter:
           stat:
             log-slow-sql: true
@@ -76,7 +76,7 @@ spring:
       driver-class-name: com.mysql.jdbc.Driver
       druid:
         min-idle: 1
-        max-active: 300
+        max-active: 10
         filter:
           stat:
             log-slow-sql: true
